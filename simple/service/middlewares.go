@@ -6,7 +6,7 @@ import (
 	"github.com/galentuo/goframe"
 )
 
-var m1 = func(next goframe.HandlerFunction) goframe.HandlerFunction {
+var m1 = func(next goframe.Handler) goframe.Handler {
 	return func(c goframe.ServerContext) error {
 		// do something before calling the next handler
 		fmt.Printf("\n\n >> Called middleware 1 << \n \n")
@@ -16,7 +16,7 @@ var m1 = func(next goframe.HandlerFunction) goframe.HandlerFunction {
 	}
 }
 
-var m2 = func(next goframe.HandlerFunction) goframe.HandlerFunction {
+var m2 = func(next goframe.Handler) goframe.Handler {
 	return func(c goframe.ServerContext) error {
 		// do something before calling the next handler
 		err := next(c)

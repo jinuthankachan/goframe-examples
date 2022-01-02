@@ -13,9 +13,7 @@ type UserService struct {
 	store   UserInterface
 }
 
-var (
-	ErrUserNotFound = frame.NewInternalError(404, "user-001", "user not found")
-)
+var ErrUserNotFound = frame.NewError(404, "user-001", "user not found")
 
 func NewUserService() *UserService {
 	srv := frame.NewHTTPService("user")
@@ -54,7 +52,7 @@ func (us *UserService) PutUser(c frame.ServerContext) error {
 	decoder := json.NewDecoder(c.Request().Body)
 	if err := decoder.Decode(&u); err != nil {
 		return c.Response().ErrorJSON(
-			frame.NewInternalError(500, "simple-001", "invalid request"))
+			frame.NewError(500, "simple-001", "invalid request"))
 	}
 	err := us.store.Insert(c, store.User{
 		ID:      userID,
@@ -64,7 +62,7 @@ func (us *UserService) PutUser(c frame.ServerContext) error {
 	})
 	if err != nil {
 		return c.Response().ErrorJSON(
-			frame.NewInternalError(500, "user-002", "failed to insert user"))
+			frame.NewError(500, "user-002", "failed to insert user"))
 	}
 	return c.Response().SuccessJSON(201, nil, "inserted user")
 }
